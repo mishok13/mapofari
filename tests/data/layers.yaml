@@ -1,0 +1,539 @@
+roads:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *, AsBinary("way") AS geom
+    FROM %(table_prefix)s_line_$zoom$
+    WHERE "way" && $bbox$ AND highway='road' AND
+    ((tunnel not in ('yes', 'true', '1') or tunnel is null) and (bridge not in ('yes', 'true', '1') or bridge is null))
+    ORDER BY z_order;
+trunks:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *, AsBinary("way") AS geom
+    FROM %(table_prefix)s_line_$zoom$
+    WHERE "way" && $bbox$ AND (highway='trunk' OR highway='trunk_link') AND
+    ((tunnel not in ('yes', 'true', '1') or tunnel is null) and (bridge not in ('yes', 'true', '1') or bridge is null))
+    order by z_order
+primaries:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *, AsBinary("way") AS geom
+    FROM %(table_prefix)s_line_$zoom$
+    WHERE "way" && $bbox$ AND (highway='primary' OR highway='primary_link') AND
+    ((tunnel not in ('yes', 'true', '1') or tunnel is null) and (bridge not in ('yes', 'true', '1') or bridge is null))
+    order by z_order;
+secondaries:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *, AsBinary("way") AS geom
+    FROM %(table_prefix)s_line_$zoom$
+    WHERE "way" && $bbox$ AND (highway='secondary' OR highway='secondary_link') AND
+    ((tunnel not in ('yes', 'true', '1') or tunnel is null) and (bridge not in ('yes', 'true', '1') or bridge is null))
+    order by z_order;
+tertiaries:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *, AsBinary("way") AS geom
+    FROM %(table_prefix)s_line_$zoom$
+    WHERE "way" && $bbox$ AND highway='tertiary' AND
+    ((tunnel not in ('yes', 'true', '1') or tunnel is null) and (bridge not in ('yes', 'true', '1') or bridge is null))
+    order by z_order;
+unclassified:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *, AsBinary("way") AS geom
+    FROM %(table_prefix)s_line_$zoom$
+    WHERE "way" && $bbox$ AND highway='unclassified' AND
+    ((tunnel not in ('yes', 'true', '1') or tunnel is null) and (bridge not in ('yes', 'true', '1') or bridge is null))
+    order by z_order;
+residentials:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *, AsBinary("way") AS geom
+    FROM %(table_prefix)s_line_$zoom$
+    WHERE "way" && $bbox$ AND highway='residential' AND
+    ((tunnel not in ('yes', 'true', '1') or tunnel is null) and (bridge not in ('yes', 'true', '1') or bridge is null))
+    order by z_order;
+motorways:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *, AsBinary("way") AS geom
+    FROM %(table_prefix)s_line_$zoom$
+    WHERE "way" && $bbox$ AND (highway='motorway' OR highway='motorway_link') AND
+    ((tunnel not in ('yes', 'true', '1') or tunnel is null) and (bridge not in ('yes', 'true', '1') or bridge is null))
+    order by z_order;
+coastlines:
+  driver: shape
+  srs: +proj=merc +datum=WGS84 +over
+  file: \%(coastlines_path)s
+land:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *
+    FROM %(table_prefix)s_polygon_$zoom$
+    WHERE way && $bbox$ AND "natural"='land'
+    ORDER BY z_order;
+water:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *
+    FROM %(table_prefix)s_polygon_$zoom$
+    WHERE "way" && $bbox$ AND (landuse IN ('reservoir', 'water') OR "natural" IN ('water', 'lake') OR waterway IN ('riverbank', 'dock', 'basin'))
+    ORDER BY z_order;
+riverbanks:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *
+    FROM %(table_prefix)s_polygon_$zoom$
+    WHERE "way" && $bbox$ AND waterway = 'riverbank'
+    ORDER BY z_order;
+basins:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *
+    FROM %(table_prefix)s_polygon_$zoom$
+    WHERE "way" && $bbox$ AND waterway = 'basin'
+    ORDER BY z_order;docks:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *
+    FROM %(table_prefix)s_polygon_$zoom$
+    WHERE "way" && $bbox$ AND waterway = 'dock'
+    ORDER BY z_order;
+ocean_and_lakes:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *
+    FROM %(table_prefix)s_polygon_$zoom$
+    WHERE "way" && $bbox$ AND (landuse IN ('reservoir', 'water') OR "natural" IN ('water', 'lake'))
+    ORDER BY z_order;
+waterway:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *
+    FROM %(table_prefix)s_line_$zoom$
+    where "way" && $bbox$ AND (waterway IS NOT NULL and waterway not in ('river', 'stream', 'drain', 'canal', 'dam', 'weir'))
+    ORDER BY z_order;
+waterway_editable:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *
+    FROM %(table_prefix)s_line_$zoom$
+    WHERE "way" && $bbox$ AND waterway IN ('river', 'stream', 'drain', 'canal', 'dam', 'weir')
+    ORDER BY z_order;
+polygon_leisure:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *
+    FROM %(table_prefix)s_polygon_$zoom$
+    WHERE way && $bbox$
+    ORDER BY z_order, way_area DESC;
+
+polygon_highway_area_casing:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select way,highway
+    from %(table_prefix)s_polygon_$zoom$
+    where "way" && $bbox$ AND
+    highway in ('residential', 'unclassified', 'pedestrian', 'service', 'footway', 'track', 'living_street') AND
+    "area" in ('yes', 'true', '1')
+    ORDER BY z_order,way_area DESC;
+
+tunnels:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select *
+    from %(table_prefix)s_line_$zoom$
+    where "way" && $bbox$ AND tunnel in ('yes', 'true', '1')
+    order by z_order;
+
+rails:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    SELECT *
+    FROM %(table_prefix)s_line_$zoom$
+    WHERE "way" && $bbox$ AND railway in ('rail', 'spur')
+    ORDER BY z_order;
+
+buildings:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select *
+    from %(table_prefix)s_polygon_$zoom$
+    where "way" && $bbox$ AND (railway='station' or building='station')
+    order by z_order,way_area desc
+
+waterway_bridges:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select *
+    from %(table_prefix)s_line_$zoom$
+    where way && $bbox$ AND (waterway='canal' and bridge in ('yes', 'true', '1'))
+    order by z_order
+
+bridges:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select * from %(table_prefix)s_line_$zoom$ where way && $bbox$ AND (bridge in ('yes', 'true')) order by z_order
+
+roads_direction:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select way,highway,railway,name,ref,oneway,area,char_length(ref) as length from %(table_prefix)s_line_$zoom$ where way && $bbox$ AND (oneway in ('yes', 'true', '1'))
+
+admin:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select way,admin_level from %(table_prefix)s_line_$zoom$ where way && $bbox$ AND ("boundary"='administrative')
+
+continents_name:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select * from %(table_prefix)s_point_1 where way && $bbox$ AND (place='continent')
+
+oceans:
+  driver: shape
+  path: "%WORLD_BOUNDARIES_DIR%/shapes/oceans"
+
+capital_cities_points:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select * from %(table_prefix)s_point_$zoom$ where way && $bbox$ AND (capital='yes')
+
+large_cities_text:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select * from large_cities where way && $bbox$ order by number asc
+
+city_text:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select * from %(table_prefix)s_point_$zoom$
+    where way && $bbox$ AND ((place='city' and (capital not in ('yes') or capital is null)))
+
+amenity:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select * from %(table_prefix)s_point_$zoom$
+    where way && $bbox$ AND (amenity IS NOT NULL or railway is NOT NULL or "natural" is NOT NULL or man_made is NOT NULL or highway is NOT NULL or aeroway is NOT NULL or shop is NOT NULL or tourism is NOT NULL or military is NOT NULL or highway is NOT NULL)
+
+power:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select * from %(table_prefix)s_line_$zoom$
+    where way && $bbox$ AND ("power"='line') order by z_order
+
+power_tower:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select way from %(table_prefix)s_point_$zoom$
+    where way && $bbox$ AND (power='tower')
+
+line_features:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select way, highway, landuse, "natural", man_made, waterway, name, ref, char_length(ref) as length from %(table_prefix)s_line_$zoom$
+    where way && $bbox$ AND (waterway IS NULL and leisure IS NULL and landuse IS NULL)
+
+buildings_range:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select way,"addr:housenumber" as name, "addr:interpolation" from %(table_prefix)s_line_$zoom$
+    where way && $bbox$ AND ("addr:interpolation" is not null)
+
+building_numbers:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select way,"addr:housenumber" as name, char_length("addr:housenumber") as length from %(table_prefix)s_polygon_$zoom$
+    where way && $bbox$ AND ("addr:housenumber" is not null)
+
+building_numbers2:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select way,"addr:housenumber" as name, char_length("addr:housenumber") as length from %(table_prefix)s_point_$zoom$
+    where way && $bbox$ AND ("addr:housenumber" is not null)
+
+text:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select * from %(table_prefix)s_point_$zoom$
+    where way && $bbox$ AND (place not in ('city') or place is null)
+
+roads_text:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select way, highway, area, railway, name, ref, oneway, char_length(ref) as length from %(table_prefix)s_line_$zoom$
+    where way && $bbox$
+
+planet_line_text_osm:
+  driver: postgis
+  connection:
+    host: "%(dbhost)s"
+    port: "%(dbport)s"
+    database: "%(dbname)s"
+    login: "%(dblogin)s"
+    password: "%(dbpassword)s"
+  srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over
+  query: |
+    select way,highway,railway,landuse,"natural",man_made,waterway,tourism,learning,amenity,place,name,ref,oneway,char_length(ref) as length
+    from %(table_prefix)s_line_$zoom$
+    where way && $bbox$ AND (waterway IS NULL and leisure IS NULL and landuse IS NULL and highway IS NULL and railway IS NULL and "boundary" is null)

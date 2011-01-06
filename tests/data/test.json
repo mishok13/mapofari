@@ -1,0 +1,13 @@
+{"roads": {
+     "driver": "postgis",
+     "connection": {
+	 "host": "127.0.0.1",
+	 "port": 5432
+     },
+     "query": "SELECT * FROM %(table_prefix)sline$zoom$ WHERE highway IS NOT NULL"
+ },
+ "coastlines": {
+     "driver": "shape",
+     "file": "somecrazyshit?"
+ }
+}

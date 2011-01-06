@@ -1,0 +1,49 @@
+polygon_world:
+  polygon:
+    -
+      fill: "#eae8dd"
+      zoom: 0-18
+  layer: "world"
+
+polygon_builtup:
+  polygon:
+    -
+      fill: "#dddddd"
+      zoom: 8-10
+  layer: "builtup"
+
+polygon_land:
+  polygon:
+    -
+      fill: "#eae8dd"
+      zoom: 0-18
+  layer: "land"
+
+polygon_oceans_and_lakes:
+  polygon:
+    -
+      fill: "#98bcda"
+      zoom: 7-18
+  layer: oceans_and_lakes
+
+polygon_large_rivers:
+  polygon:
+    -
+      fill: "#98bcda"
+      zoom: 7-18
+  layer: riverbanks
+
+polygon_docks:
+  polygon:
+    -
+      fill: "#98bcda"
+      zoom: 14-18
+  layer: docks
+
+polygon_basins:
+  polygon:
+    -
+      fill: "#98bcda"
+      zoom: 14-18
+  layer: basins
+line_water:
