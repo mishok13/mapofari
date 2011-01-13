@@ -1,0 +1,29 @@
+What is this?
+=============
+
+Mapofari is a map rendering engine in permanent alpha status.
+Oh, and it's written in Python.
+
+What this is not?
+=================
+
+Mapofari is not a fully-operational rendering engine and doesn't aim to be.
+Mapofari will never provide anything besides what I need.
+Mapofari is not Mapnik and will never be as good as Mapnik is.
+Mapofari is not a project of CloudMade or any other company I've worked or ever going to work in.
+Mapofari is also not very performant, though it uses Cairo (which is pretty fast by itself).
+
+What features are already in?
+=============================
+
+None.
+
+What is planned?
+================
+
+* Support for POI rendering
+* Support for line rendering
+* Meta-layering support
+* Support of Mapnik styles
+* Support of MapCSS
+* Lots more.
