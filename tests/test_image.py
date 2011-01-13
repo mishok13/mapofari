@@ -3,12 +3,14 @@
 
 
 import nose
+from mapofari.image import Image
 
 
 
 def test_line():
-    pass
-
+    image = Image(200, 200)
+    image.line([(0,0), (200, 200)], (128, 256, 0), 10)
+    print image.bytes()
 
 
 def test_point():

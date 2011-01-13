@@ -5,6 +5,7 @@ import cairo
 import math
 import functools
 import time
+from cStringIO import StringIO
 
 
 class Image(object):
@@ -14,7 +15,8 @@ class Image(object):
                'A8': cairo.FORMAT_A8,
                'A1': cairo.FORMAT_A1}
 
-    def __init__(self, width, height, fmt, background):
+    def __init__(self, width, height, fmt='RGB32',
+                 background=(0, 0, 0, 0)):
         try:
             cairo_format = self.formats[fmt.upper()]
         except KeyError:
@@ -84,6 +86,9 @@ class Image(object):
 
     def save(self, path):
         self.surface.write_to_png(path)
+
+    def bytes(self):
+        return self.surface.get_data()
 
 
 def warp_path(ctx, func):
