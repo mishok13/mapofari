@@ -1,6 +1,8 @@
-(ns mapofari.core)
+(ns mapofari.core
+  )
+
 
 (defn -main
-  "I don't do a whole lot."
+  "This is just for kicks here"
   [& args]
   (println "Hello, World!"))
